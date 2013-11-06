@@ -5,10 +5,12 @@
 # Latest version can be found here https://github.com/sgalashyn/linode-ubuntu
 #
 
-# Update the system hostname
+# Update the system hostname and register it with hosts
 function system_set_hostname {
 
   echo $1 > /etc/hostname
+
+  sed -i "s/ubuntu/$1/" /etc/hosts
 
 }
 
@@ -88,7 +90,7 @@ function system_add_primary_user {
   USERNAME=`echo $2 | tr '[:upper:]' '[:lower:]'`
   PASSWORD=$3
 
-  groupadd "$GROUPNAME" # group should be in sudoers (e.g. 'admin')
+  groupadd "$GROUPNAME" # additional group should be in sudoers (e.g. 'admin')
 
   useradd --create-home --shell "/bin/bash" --user-group --groups "$GROUPNAME" "$USERNAME"
   echo "$USERNAME:$PASSWORD" | chpasswd
@@ -127,13 +129,10 @@ function install_apache {
     return 1;
   fi
 
-  echo "$1 - $2"
-  return 1;
-
   apt-get -y install apache2 apache2-mpm-prefork
 
   a2dissite default # disable the interfering default virtualhost
-  a2enmod ssl # enable the SSL module
+  a2enmod ssl # enable the useful modules
 
   # tune the memory usage: $1 is the percent of system memory to allocate towards Apache
 
@@ -175,9 +174,27 @@ function install_mysql {
   apt-get -y install mysql-server mysql-client
 
   echo "Sleeping while MySQL starts up for the first time..."
+  sleep 7
+
+  # Cleanup the test database
+  echo "DROP DATABASE test;" | mysql -u root -p$1
+
+  return 1;
+
+  # tune the InnoDB configuration
+
+  service mysql stop
   sleep 5
 
-  # TODO: tune the memory usage: $2 is the percent of system memory to allocate towards MySQL
+# TODO: inject this before [mysqldump]
+# * Custom InnoDB configuration
+innodb_file_per_table   = 1 # flexibility for InnoDB tables
+innodb_log_buffer_size  = $2 # 4M-8M is enough unless you write huge blobs
+innodb_buffer_pool_size = $3 # 80% of RAM on dedicated host, less on shared
+innodb_log_file_size    = $4 # depends on running apps nature
+
+  service mysql start
+  sleep 5
 
 }
 
@@ -204,5 +221,21 @@ function install_java {
 
 }
 
-# TODO: functions for Railo
+# Install the Railo server
+function install_railo {
+
+  # desired $1 version, $2 admin password, $3 system user name
+  # TODO: test this approach (incomplete!)
+
+  cd
+  wget "http://www.getrailo.org/railo/remote/download/$1/tomcat/linux/railo-$1-pl0-linux-x64-installer.run"
+  chmod +x "railo-$1-pl0-linux-x64-installer.run"
+  ./railo-$1-pl0-linux-x64-installer.run --mode unattended --railopass "$2" --systemuser "$3" --apacheconfigloc /etc/apache2/railo.conf
+
+  # TODO: configure the JRE and memory settings
+
+}
+
 # TODO: function for Tomcat virtual hosts
+
+#
