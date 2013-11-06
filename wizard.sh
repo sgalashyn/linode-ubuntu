@@ -2,6 +2,8 @@
 #
 # Setup runner script which executes the selected commands.
 #
+# Latest version can be found here https://github.com/sgalashyn/linode-ubuntu
+#
 
 # Configuration
 
@@ -12,7 +14,7 @@ USER_NAME=""
 USER_PASS=""
 KEY_FILE="/root/id_rsa.pub"
 
-GIT_USER="root"
+GIT_NAME="root"
 GIT_EMAIL="root@$HOST_NAME"
 
 SETUP_APACHE="No"
@@ -34,7 +36,7 @@ source "library.sh"
 
 system_upgrade
 
-install_essentials
+install_essentials $GIT_NAME $GIT_EMAIL
 
 system_init_git_etc
 

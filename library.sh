@@ -2,6 +2,8 @@
 #
 # System configuration and software setup utilities.
 #
+# Latest version can be found here https://github.com/sgalashyn/linode-ubuntu
+#
 
 # Update the system hostname
 function system_set_hostname {
