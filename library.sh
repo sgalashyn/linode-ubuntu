@@ -73,7 +73,7 @@ function system_log_etc {
     MESSAGE="$1"
   fi
 
-  cd
+  cd /etc
   git add .
   git commit -m "$MESSAGE"
 
