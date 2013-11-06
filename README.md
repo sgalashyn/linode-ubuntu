@@ -2,8 +2,10 @@
 
 Scripts for managing the Ubuntu servers on the Linode.
 
-Significant part of configuration is hardcoded and reflects personal preferences.
-Eventually all of the options should become configurable.
+Many functions are inspired by Linode StackScripts and excellent Linode documentation.
+
+Significant part of configuration is currently hardcoded and reflects author's personal preferences.
+Eventually all of the options should become externally configurable.
 
 ## Scripts Included
 
@@ -24,6 +26,7 @@ Eventually all of the options should become configurable.
 
 ## Useful Links
 
+* [Linode Library](https://library.linode.com/)
 * [Linode StackScripts](https://library.linode.com/stackscripts)
 * [Installing Oracle JDK in Ubuntu via PPA](http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
 
