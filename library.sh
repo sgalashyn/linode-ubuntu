@@ -101,10 +101,8 @@ function system_add_primary_user {
 # Install the useful software
 function install_essentials {
 
-  apt-get -y install \
-  htop iotop \
-  subversion git-core git \
-  fail2ban denyhosts
+  apt-get -y install python-software-properties \
+  htop iotop subversion git-core git fail2ban denyhosts
 
   # Configure git credentials for current user (usually root)
   git config --global user.name "$1"
