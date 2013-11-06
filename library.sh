@@ -35,8 +35,6 @@ function system_setup_sshd {
 
   service ssh restart
 
-  passwd -l "$1" # additionally lock the root
-
 }
 
 # Configure the basic UFW rules
@@ -49,7 +47,7 @@ function system_setup_ufw {
   ufw allow ssh/tcp
   ufw limit ssh/tcp
 
-  # TODO: use debconf-set-selections to avoid y/n question
+  # TODO: use debconf-set-selections to avoid y/n question when on the SSH
   #echo "ufw " | debconf-set-selections
 
   ufw enable
@@ -233,6 +231,9 @@ function install_railo {
   ./railo-$1-pl0-linux-x64-installer.run --mode unattended --railopass "$2" --systemuser "$3" --apacheconfigloc /etc/apache2/railo.conf
 
   # TODO: configure the JRE and memory settings
+
+  # Allow the Tomcat port on the firewall
+  ufw allow 8888/tcp
 
 }
 
