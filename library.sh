@@ -79,7 +79,7 @@ function system_log_etc {
 
 }
 
-# Create the primary unprivileged user and deploy the SSH key
+# Create the primary unprivileged user and deploy the initial SSH key
 function system_add_primary_user {
 
   GROUPNAME=`echo $1 | tr '[:upper:]' '[:lower:]'`
@@ -92,7 +92,8 @@ function system_add_primary_user {
   echo "$USERNAME:$PASSWORD" | chpasswd
 
   sudo -u "$USERNAME" mkdir "/home/$USERNAME/.ssh"
-  sudo -u "$USERNAME" cp "$4" "/home/$USERNAME/.ssh/authorized_keys"
+  mv "$4" "/home/$USERNAME/.ssh/authorized_keys"
+  chown "$USERNAME:$USERNAME" "/home/$USERNAME/.ssh/authorized_keys"
   chmod 0600 "/home/$USERNAME/.ssh/authorized_keys"
 
 }
@@ -195,7 +196,7 @@ function install_php {
 # Install the the Oracle JDK
 function install_java {
 
-  add-apt-repository -y ppa:webupd8team/java
+  apt-add-repository -y ppa:webupd8team/java
   apt-get update > /dev/null
   echo "oracle-java7-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
 
