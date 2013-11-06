@@ -10,14 +10,14 @@
 exec &> /root/StackScript.log
 
 # Set the proper timezone
-if [ -n $TIME_ZONE ]
+if [ -n "$TIME_ZONE" ]
 then
   echo "$TIME_ZONE" > /etc/timezone
   dpkg-reconfigure -f noninteractive tzdata
 fi
 
 # Save the SSH key (or create blank file)
-if [ -n $SSH_KEY ]
+if [ -n "$SSH_KEY" ]
 then
   echo "$SSH_KEY" > /root/id_rsa.pub
 fi
