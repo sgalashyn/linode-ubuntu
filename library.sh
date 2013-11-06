@@ -14,9 +14,9 @@ function system_set_hostname {
 function system_upgrade {
 
   apt-get update
-	apt-get -y upgrade
-	apt-get -y autoremove
-	apt-get -y autoclean
+    apt-get -y upgrade
+    apt-get -y autoremove
+    apt-get -y autoclean
 
 }
 
@@ -109,33 +109,33 @@ function install_essentials {
 # Install and tune the Apache
 function install_apache {
 
-	if [ ! -n "$1" ]
+    if [ ! -n "$1" ]
   then
-		echo "install_apache() requires the RAM percent in the first argument"
-		return 1;
-	fi
+        echo "install_apache() requires the RAM percent in the first argument"
+        return 1;
+    fi
 
-	if [ ! -n "$2" ]
+    if [ ! -n "$2" ]
   then
-		echo "install_apache() requires the user name in the second argument"
-		return 1;
-	fi
+        echo "install_apache() requires the user name in the second argument"
+        return 1;
+    fi
 
   echo "$1 - $2"
   return 1;
 
-	apt-get -y install apache2 apache2-mpm-prefork
+    apt-get -y install apache2 apache2-mpm-prefork
 
-	a2dissite default # disable the interfering default virtualhost
-	a2enmod ssl # enable the SSL module
+    a2dissite default # disable the interfering default virtualhost
+    a2enmod ssl # enable the SSL module
 
-	# tune the memory usage: $1 is the percent of system memory to allocate towards Apache
+    # tune the memory usage: $1 is the percent of system memory to allocate towards Apache
 
-	PERPROCMEM=10 # the amount of memory in MB each apache process is likely to utilize
-	MEM=$(grep MemTotal /proc/meminfo | awk '{ print int($2/1024) }') # how much memory in MB this system has
-	MAXCLIENTS=$((MEM*PERCENT/100/PERPROCMEM)) # calculate MaxClients
-	MAXCLIENTS=${MAXCLIENTS/.*} # cast to an integer
-	sed -i -e "s/\(^[ \t]*MaxClients[ \t]*\)[0-9]*/\1$MAXCLIENTS/" /etc/apache2/apache2.conf
+    PERPROCMEM=10 # the amount of memory in MB each apache process is likely to utilize
+    MEM=$(grep MemTotal /proc/meminfo | awk '{ print int($2/1024) }') # how much memory in MB this system has
+    MAXCLIENTS=$((MEM*PERCENT/100/PERPROCMEM)) # calculate MaxClients
+    MAXCLIENTS=${MAXCLIENTS/.*} # cast to an integer
+    sed -i -e "s/\(^[ \t]*MaxClients[ \t]*\)[0-9]*/\1$MAXCLIENTS/" /etc/apache2/apache2.conf
 
   # hide the version info
   sed -i "s/^\(ServerTokens\).*/\1 Prod/" /etc/apache2/conf.d/security
@@ -145,7 +145,7 @@ function install_apache {
   sed -i "s/www\-data/$2/g" /etc/apache2/envvars
   rm -rf /var/lock/apache2/
 
-	service apache2 restart
+    service apache2 restart
 
   # allow the http requests on firewall
   ufw allow http/tcp
@@ -158,32 +158,32 @@ function install_apache {
 # Install and tune the MySQL
 function install_mysql {
 
-	if [ ! -n "$1" ]
-	then
-		echo "install_mysql() requires the root password in the first argument"
-		return 1;
-	fi
+    if [ ! -n "$1" ]
+    then
+        echo "install_mysql() requires the root password in the first argument"
+        return 1;
+    fi
 
-	echo "mysql-server-5.5 mysql-server/root_password password $1" | debconf-set-selections
-	echo "mysql-server-5.5 mysql-server/root_password_again password $1" | debconf-set-selections
-	apt-get -y install mysql-server mysql-client
+    echo "mysql-server-5.5 mysql-server/root_password password $1" | debconf-set-selections
+    echo "mysql-server-5.5 mysql-server/root_password_again password $1" | debconf-set-selections
+    apt-get -y install mysql-server mysql-client
 
-	echo "Sleeping while MySQL starts up for the first time..."
-	sleep 5
+    echo "Sleeping while MySQL starts up for the first time..."
+    sleep 5
 
-	# TODO: tune the memory usage: $2 is the percent of system memory to allocate towards MySQL
+    # TODO: tune the memory usage: $2 is the percent of system memory to allocate towards MySQL
 
 }
 
 # Install and tune the PHP
 function install_php {
 
-	apt-get -y install php5 php5-mysql libapache2-mod-php5
+    apt-get -y install php5 php5-mysql libapache2-mod-php5
 
   # let PHP use 32M per process
-	sed -i'-orig' 's/memory_limit = [0-9]\+M/memory_limit = 32M/' /etc/php5/apache2/php.ini
+    sed -i'-orig' 's/memory_limit = [0-9]\+M/memory_limit = 32M/' /etc/php5/apache2/php.ini
 
-	service apache2 restart
+    service apache2 restart
 
 }
 
