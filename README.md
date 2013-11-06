@@ -29,6 +29,8 @@ Run the wizard:
 
     ./wizard.sh
 
+Reboot the node to pick the new hostname. Login as regular user to continue the setup.
+
 ## Roadmap
 
 1. Add the functions for MySQL tuning, Apache hosts,

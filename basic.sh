@@ -7,27 +7,23 @@
 # <UDF name="ssh_key" Label="SSH key to save to /root/id_rsa.pub" default="" example="Can be used by wizard.sh later" />
 #
 
-exec &> /root/stackscript.log
-
-# Restrict the SSH locales to en_US only
-sed -i "s/AcceptEnv/#AcceptEnv/" /etc/ssh/sshd_config
-service ssh restart
-dpkg-reconfigure locales
-update-locale LANG=en_US.UTF-8
+exec &> /root/StackScript.log
 
 # Set the proper timezone
-if [ -n "$TIME_ZONE" ]
+if [ -n $TIME_ZONE ]
 then
   echo "$TIME_ZONE" > /etc/timezone
   dpkg-reconfigure -f noninteractive tzdata
 fi
 
 # Save the SSH key (or create blank file)
-if [ -n "$SSH_KEY" ]
+if [ -n $SSH_KEY ]
 then
   echo "$SSH_KEY" > /root/id_rsa.pub
 fi
 
-# Make sure system is already up to date on the 1st login
-apt-get update
-apt-get -y upgrade
+# Restrict the SSH locales to en_US only
+sed -i "s/AcceptEnv/#AcceptEnv/" /etc/ssh/sshd_config
+service ssh restart
+dpkg-reconfigure locales
+update-locale LANG=en_US.UTF-8
