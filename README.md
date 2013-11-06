@@ -13,6 +13,22 @@ Eventually all of the options should become externally configurable.
 * library.sh -- System configuration and software setup utilities.
 * wizard.sh -- Setup runner script which executes the selected commands.
 
+## Usage Examples
+
+Grab the scripts:
+
+    wget https://github.com/sgalashyn/linode-ubuntu/archive/master.zip
+    unzip master.zip
+
+Edit the configuration:
+
+    cd linode-ubuntu-master
+    vim wizard.sh
+
+Run the wizard:
+
+    ./wizard.sh
+
 ## Roadmap
 
 1. Add the functions for MySQL tuning, Apache hosts,

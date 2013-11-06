@@ -3,15 +3,17 @@
 # Setup runner script which executes the selected commands.
 #
 
-source "library.sh"
-
 # Configuration
 
 HOST_NAME=""
+
 USER_GROUP="admin"
 USER_NAME=""
 USER_PASS=""
-KEY_FILE=""
+KEY_FILE="/root/id_rsa.pub"
+
+GIT_USER="root"
+GIT_EMAIL="root@$HOST_NAME"
 
 SETUP_APACHE="No"
 APACHE_RAM="40"
@@ -24,11 +26,15 @@ SETUP_PHP="No"
 
 SETUP_JAVA="No"
 
+# Include the libraries
+
+source "library.sh"
+
 # Launch the sequence
 
 install_essentials
 
-system_git_etc
+system_init_git_etc
 
 system_set_hostname $HOST_NAME
 system_log_etc "Set the hostname to $HOST_NAME"
