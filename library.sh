@@ -130,7 +130,7 @@ function install_apache {
   apt-get -y install apache2 apache2-mpm-prefork
 
   a2dissite default # disable the interfering default virtualhost
-  a2enmod ssl # enable the useful modules
+  a2enmod ssl rewrite # enable the useful modules
 
   # tune the memory usage: $1 is the percent of system memory to allocate towards Apache
 
@@ -156,7 +156,7 @@ function install_apache {
 
 }
 
-# TODO: function for Apache virtual hosts
+# TODO: functions for Apache virtual hosts (HTTP/HTTPS)
 
 # Install and tune the MySQL
 function install_mysql {
@@ -178,6 +178,8 @@ function install_mysql {
   echo "DROP DATABASE test;" | mysql -u root -p$1
 
   return 1;
+
+  # NOTE: this part of the function is incomplete
 
   # tune the InnoDB configuration
 
@@ -223,17 +225,50 @@ function install_java {
 function install_railo {
 
   # desired $1 version, $2 admin password, $3 system user name
-  # TODO: test this approach (incomplete!)
+
+  # NOTE: this function is totally incomplete, just a bunch of snippets
+
+  INSTALLER="railo-$1-pl0-linux-x64-installer.run"
 
   cd
-  wget "http://www.getrailo.org/railo/remote/download/$1/tomcat/linux/railo-$1-pl0-linux-x64-installer.run"
-  chmod +x "railo-$1-pl0-linux-x64-installer.run"
-  ./railo-$1-pl0-linux-x64-installer.run --mode unattended --railopass "$2" --systemuser "$3" --apacheconfigloc /etc/apache2/railo.conf
+  wget "http://www.getrailo.org/railo/remote/download/$1/tomcat/linux/$INSTALLER"
+
+
+  chmod +x $INSTALLER
+
+  ./$INSTALLER --mode unattended --railopass "$2" --systemuser "$3"
+  # this key is pretty strange, it works partially
+  #--apacheconfigloc /etc/apache2/railo.conf
+  # TODO: set default context password?
+
+  sudo /etc/init.d/railo_ctl stop
 
   # TODO: configure the JRE and memory settings
 
-  # Allow the Tomcat port on the firewall
-  ufw allow 8888/tcp
+# /etc/init.d/railo_ctl
+JRE_HOME=/usr/lib/jvm/java-7-oracle/jre; export JRE_HOME
+JAVA_HOME=/usr/lib/jvm/java-7-oracle; export JAVA_HOME
+
+# /opt/railo/tomcat/bin/setenv.sh
+JAVA_OPTS="-Xms256m -Xmx512m -XX:MaxPermSize=128m -javaagent:lib/railo-inst.jar";   # memory settings
+
+  # TODO: enable the IP addresses forwarding in web.conf
+
+    <!-- make sure X-Forwarded-For is applied to cgi.REMOTE_ADDR -->
+    <filter>
+        <filter-name>RemoteIpFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.RemoteIpFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RemoteIpFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+  # open the access to the Tomcat port from localhost (Apache proxy)
+  ufw allow from 127.0.0.1 to any port 8888 proto tcp
+  # alternatively, allow connections from everywhere
+  #ufw allow 8888/tcp
 
 }
 
