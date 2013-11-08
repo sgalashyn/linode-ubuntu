@@ -179,19 +179,14 @@ function install_mysql {
 
   return 1;
 
-  # NOTE: this part of the function is incomplete
+  # NOTE: this part of the function is incomplete, also see snippets.txt
 
   # tune the InnoDB configuration
 
   service mysql stop
   sleep 5
 
-# TODO: inject this before [mysqldump]
-# * Custom InnoDB configuration
-innodb_file_per_table   = 1 # flexibility for InnoDB tables
-innodb_log_buffer_size  = $2 # 4M-8M is enough unless you write huge blobs
-innodb_buffer_pool_size = $3 # 80% of RAM on dedicated host, less on shared
-innodb_log_file_size    = $4 # depends on running apps nature
+  # TODO: inject snippet before [mysqldump]
 
   service mysql start
   sleep 5
@@ -224,15 +219,16 @@ function install_java {
 # Install the Railo server
 function install_railo {
 
-  # desired $1 version, $2 admin password, $3 system user name
+  # NOTE: this function is totally incomplete, also see snippets.txt
 
-  # NOTE: this function is totally incomplete, just a bunch of snippets
+  return 1;
+
+  # desired $1 version, $2 admin password, $3 system user name
 
   INSTALLER="railo-$1-pl0-linux-x64-installer.run"
 
   cd
   wget "http://www.getrailo.org/railo/remote/download/$1/tomcat/linux/$INSTALLER"
-
 
   chmod +x $INSTALLER
 
@@ -245,25 +241,7 @@ function install_railo {
 
   # TODO: configure the JRE and memory settings
 
-# /etc/init.d/railo_ctl
-JRE_HOME=/usr/lib/jvm/java-7-oracle/jre; export JRE_HOME
-JAVA_HOME=/usr/lib/jvm/java-7-oracle; export JAVA_HOME
-
-# /opt/railo/tomcat/bin/setenv.sh
-JAVA_OPTS="-Xms256m -Xmx512m -XX:MaxPermSize=128m -javaagent:lib/railo-inst.jar";   # memory settings
-
   # TODO: enable the IP addresses forwarding in web.conf
-
-    <!-- make sure X-Forwarded-For is applied to cgi.REMOTE_ADDR -->
-    <filter>
-        <filter-name>RemoteIpFilter</filter-name>
-        <filter-class>org.apache.catalina.filters.RemoteIpFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>RemoteIpFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
 
   # open the access to the Tomcat port from localhost (Apache proxy)
   ufw allow from 127.0.0.1 to any port 8888 proto tcp

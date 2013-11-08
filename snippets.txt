@@ -1,0 +1,36 @@
+Configs, commands and other useful stuff that could eventually be integrated with scripts.
+
+--
+
+MySQL
+
+# * Custom InnoDB configuration
+innodb_file_per_table   = 1 # flexibility for InnoDB tables
+innodb_log_buffer_size  = $2 # 4M-8M is enough unless you write huge blobs
+innodb_buffer_pool_size = $3 # 80% of RAM on dedicated host, less on shared
+innodb_log_file_size    = $4 # depends on running apps nature
+
+--
+
+Railo
+
+# Use Oracle JDK in /etc/init.d/railo_ctl
+JRE_HOME=/usr/lib/jvm/java-7-oracle/jre; export JRE_HOME
+JAVA_HOME=/usr/lib/jvm/java-7-oracle; export JAVA_HOME
+
+# Default Java options in /opt/railo/tomcat/bin/setenv.sh -- goal is to make it adjustable in the function
+JAVA_OPTS="-Xms256m -Xmx512m -XX:MaxPermSize=128m -javaagent:lib/railo-inst.jar";   # memory settings
+
+# 
+<!-- make sure X-Forwarded-For is copied to to cgi.REMOTE_ADDR -->
+<filter>
+  <filter-name>RemoteIpFilter</filter-name>
+  <filter-class>org.apache.catalina.filters.RemoteIpFilter</filter-class>
+</filter>
+<filter-mapping>
+  <filter-name>RemoteIpFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+  <dispatcher>REQUEST</dispatcher>
+</filter-mapping>
+
+# TODO: also need to fix HTTPS and AJAX detection
