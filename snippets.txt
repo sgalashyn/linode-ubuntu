@@ -21,7 +21,8 @@ JAVA_HOME=/usr/lib/jvm/java-7-oracle; export JAVA_HOME
 # Default Java options in /opt/railo/tomcat/bin/setenv.sh -- goal is to make it adjustable in the function
 JAVA_OPTS="-Xms256m -Xmx512m -XX:MaxPermSize=128m -javaagent:lib/railo-inst.jar";   # memory settings
 
-# 
+# Tweaks for Tomcat/Apache communication
+# TODO: fix HTTPS and AJAX detection
 <!-- make sure X-Forwarded-For is copied to to cgi.REMOTE_ADDR -->
 <filter>
   <filter-name>RemoteIpFilter</filter-name>
@@ -33,4 +34,12 @@ JAVA_OPTS="-Xms256m -Xmx512m -XX:MaxPermSize=128m -javaagent:lib/railo-inst.jar"
   <dispatcher>REQUEST</dispatcher>
 </filter-mapping>
 
-# TODO: also need to fix HTTPS and AJAX detection
+--
+
+Cron
+
+# Railo re-schedules failed tasks which sometimes isn't acceptable
+# Using cron is the alternative solution to this problem
+
+
+--

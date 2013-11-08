@@ -41,12 +41,17 @@ Reboot the node to pick the new hostname. Login as regular user to continue the 
 1. Document the usage properly with ready-to-use examples.
 1. Add the functions for Node.js and Grunt.js.
 1. Consider splitting the library and use only selected parts.
+1. Add the function for Tomcat upgrade in the Railo installation.
+1. Add the functions for cron jobs handling.
 
 ## Useful Links
 
 * [Linode Library](https://library.linode.com/)
 * [Linode StackScripts](https://library.linode.com/stackscripts)
 * [Installing Oracle JDK in Ubuntu via PPA](http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html)
+* [InnoDB performance optimization basics](http://www.mysqlperformanceblog.com/2013/09/20/innodb-performance-optimization-basics-updated/)
+* [Railo at GitHub](https://github.com/getrailo/railo)
+* [Railo at Google Groups](https://groups.google.com/forum/#!forum/railo)
 
 ## License
 

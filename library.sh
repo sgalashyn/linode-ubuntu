@@ -157,6 +157,7 @@ function install_apache {
 }
 
 # TODO: functions for Apache virtual hosts (HTTP/HTTPS)
+# NOTE: if using modern mod_cfml connector there's no need to configure the Tomcat vhosts
 
 # Install and tune the MySQL
 function install_mysql {
@@ -210,6 +211,7 @@ function install_java {
 
   apt-add-repository -y ppa:webupd8team/java
   apt-get update > /dev/null
+
   echo "oracle-java7-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
 
   apt-get install -y oracle-java7-installer
@@ -249,7 +251,5 @@ function install_railo {
   #ufw allow 8888/tcp
 
 }
-
-# TODO: function for Tomcat virtual hosts
 
 #
