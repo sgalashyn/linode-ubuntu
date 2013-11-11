@@ -129,8 +129,8 @@ function install_apache {
 
   apt-get -y install apache2 apache2-mpm-prefork
 
-  a2dissite default # disable the interfering default virtualhost
-  a2enmod ssl rewrite # enable the useful modules
+  a2dissite default default-ssl # disable the interfering default virtual hosts
+  a2enmod ssl rewrite proxy # enable the useful modules
 
   # tune the memory usage: $1 is the percent of system memory to allocate towards Apache
 

@@ -43,3 +43,20 @@ Cron
 
 
 --
+
+Logrotate
+
+# If vhost logs are stored in $HOME create custom logrotate entry.
+
+-- 
+
+SSL
+
+# Convert pkcs12 to openssl:
+openssl pkcs12 -in certificate.pfx -nocerts -out certificate.key
+openssl pkcs12 -in certificate.pfx -clcerts -nokeys -out certificate.crt
+# Remove the passphrase to allow apache restart without asking fo it:
+cp certificate.key certificate.passhprase
+openssl rsa -in certificate.passhprase -out certificate.key
+
+--

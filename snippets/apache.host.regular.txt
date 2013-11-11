@@ -1,0 +1,25 @@
+<VirtualHost *:443>
+
+  ServerName $APPNAME
+
+  DocumentRoot /home/$USERNAME/webapps/$APPNAME/
+
+  <Directory /home/$USERNAME/webapps/$APPNAME/>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Allow from all
+    DirectoryIndex index.cfm
+  </Directory>
+
+  <Location /railo-context/admin>
+    Order deny,allow
+    Deny from all
+    Allow from 127.0.0.1
+  </location>
+
+  ErrorLog /home/$USERNAME/logs/error.$APPNAME.log
+  CustomLog /home/$USERNAME/logs/access.$APPNAME.log combined
+
+  Include railo4.conf
+
+</VirtualHost>
