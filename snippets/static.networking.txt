@@ -1,0 +1,26 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5)
+# and https://library.linode.com/networking/configuring-static-ip-interfaces
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The initial defaults with DHCP
+#auto eth0
+#iface eth0 inet dhcp
+
+# The static networking
+
+auto eth0 eth0:0
+
+# eth0 - main IP address
+iface eth0 inet static
+ address $PUBLIC_IP
+ netmask 255.255.255.0
+ gateway $DEFAULT_GATEWAY
+
+# eth0:0 - private IP address
+iface eth0:0 inet static
+ address $PRIVATE_IP
+ netmask 255.255.128.0
