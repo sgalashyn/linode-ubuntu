@@ -7,15 +7,17 @@
 
 # Configuration
 
-HOST_NAME=""
-
 USER_GROUP="admin"
 USER_NAME=""
 USER_PASS=""
 KEY_FILE="/root/id_rsa.pub"
 
 GIT_NAME="root"
-GIT_EMAIL="root@$HOST_NAME"
+GIT_EMAIL="root@`hostname`"
+
+echo $GIT_EMAIL
+
+exit 1;
 
 SETUP_APACHE="No"
 APACHE_RAM="40"
@@ -39,9 +41,6 @@ system_upgrade
 install_essentials $GIT_NAME $GIT_EMAIL
 
 system_init_git_etc
-
-system_set_hostname $HOST_NAME
-system_log_etc "Set the hostname to $HOST_NAME"
 
 system_setup_sshd
 system_log_etc "Configured the sshd"

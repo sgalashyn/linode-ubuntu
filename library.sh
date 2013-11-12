@@ -5,15 +5,6 @@
 # Latest version can be found here https://github.com/sgalashyn/linode-ubuntu
 #
 
-# Update the system hostname and register it with hosts
-function system_set_hostname {
-
-  echo $1 > /etc/hostname
-
-  sed -i "s/ubuntu/$1/" /etc/hosts
-
-}
-
 # Upgrade the system packages
 function system_upgrade {
 
