@@ -15,10 +15,6 @@ KEY_FILE="/root/id_rsa.pub"
 GIT_NAME="root"
 GIT_EMAIL="root@`hostname`"
 
-echo $GIT_EMAIL
-
-exit 1;
-
 SETUP_APACHE="No"
 APACHE_RAM="40"
 

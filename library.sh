@@ -118,18 +118,19 @@ function install_apache {
     return 1;
   fi
 
-  apt-get -y install apache2 apache2-mpm-prefork
+  apt-get -y install apache2 #apache2-mpm-prefork
 
   a2dissite default default-ssl # disable the interfering default virtual hosts
   a2enmod ssl rewrite proxy # enable the useful modules
 
   # tune the memory usage: $1 is the percent of system memory to allocate towards Apache
+  # NOTE: disabled, requires thorough research before using on production
 
-  PERPROCMEM=10 # the amount of memory in MB each apache process is likely to utilize
-  MEM=$(grep MemTotal /proc/meminfo | awk '{ print int($2/1024) }') # how much memory in MB this system has
-  MAXCLIENTS=$((MEM*PERCENT/100/PERPROCMEM)) # calculate MaxClients
-  MAXCLIENTS=${MAXCLIENTS/.*} # cast to an integer
-  sed -i -e "s/\(^[ \t]*MaxClients[ \t]*\)[0-9]*/\1$MAXCLIENTS/" /etc/apache2/apache2.conf
+  #PERPROCMEM=10 # the amount of memory in MB each apache process is likely to utilize
+  #MEM=$(grep MemTotal /proc/meminfo | awk '{ print int($2/1024) }') # how much memory in MB this system has
+  #MAXCLIENTS=$((MEM*PERCENT/100/PERPROCMEM)) # calculate MaxClients
+  #MAXCLIENTS=${MAXCLIENTS/.*} # cast to an integer
+  #sed -i -e "s/\(^[ \t]*MaxClients[ \t]*\)[0-9]*/\1$MAXCLIENTS/" /etc/apache2/apache2.conf
 
   # hide the version info
   sed -i "s/^\(ServerTokens\).*/\1 Prod/" /etc/apache2/conf.d/security
