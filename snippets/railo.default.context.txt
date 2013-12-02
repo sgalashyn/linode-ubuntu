@@ -1,0 +1,12 @@
+# Hide the default content
+cd /opt/railo
+mkdir backups
+cd backups/
+mkdir webapps-init
+cd webapps-init/
+mv ../../tomcat/webapps/ROOT/Application.cfc .
+mv ../../tomcat/webapps/ROOT/index.cfm .
+mv ../../tomcat/webapps/ROOT/favicon.ico .
+mv ../../tomcat/webapps/ROOT/res/ .
+cd ../../tomcat/webapps/ROOT/
+touch index.cfm

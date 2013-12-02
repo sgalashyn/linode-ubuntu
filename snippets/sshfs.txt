@@ -1,0 +1,7 @@
+# HOWTO https://help.ubuntu.com/community/SSHFS
+# Mount the remote server to the local directory (SSH keys assumed)
+sshfs -o idmap=user $USER_NAME@$SERVER_NAME:remote/directory local_directory
+# Umount the SSHFS directory
+fusermount -u local_directory
+# /etc/fstab (not recommended, may halt the boot)
+sshfs#$USER_NAME@$SERVER_NAME:remote/directory /home/$USER_NAME/local_directory fuse defaults,users,idmap=user 0 0

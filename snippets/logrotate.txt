@@ -1,1 +1,8 @@
-TODO
+# Rotate the custom user logs weekly
+/home/$USER_NAME/logs/*.log {
+  copytruncate
+  create 644 $USER_NAME $USER_NAME
+  weekly
+  rotate 7
+  missingok
+}

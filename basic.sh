@@ -15,7 +15,10 @@ exec &> /root/StackScript.log
 # Set the new default system hostname
 echo $HOST_NAME > /etc/hostname
 hostname -F /etc/hostname
+# In 12.04+ both localhost and ubuntu are mapped to 127.0.01
 sed -i "s/ubuntu/$HOST_NAME/" /etc/hosts
+# Restart cron daemon to make sure it picked up the timezone change
+service cron restart
 
 # Set the proper timezone
 if [ -n "$TIME_ZONE" ]

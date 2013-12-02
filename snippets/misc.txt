@@ -19,7 +19,8 @@ JRE_HOME=/usr/lib/jvm/java-7-oracle/jre; export JRE_HOME
 JAVA_HOME=/usr/lib/jvm/java-7-oracle; export JAVA_HOME
 
 # Default Java options in /opt/railo/tomcat/bin/setenv.sh -- goal is to make it adjustable in the function
-JAVA_OPTS="-Xms256m -Xmx512m -XX:MaxPermSize=128m -javaagent:lib/railo-inst.jar";   # memory settings
+JAVA_OPTS="-Xms256m -Xmx512m -XX:MaxPermSize=128m -javaagent:lib/railo-inst.jar";   # default memory settings
+JAVA_OPTS="-Xms1500m -Xmx3500m -XX:MaxPermSize=256m -javaagent:lib/railo-inst.jar";
 
 # Tweaks for Tomcat/Apache communication
 # TODO: fix HTTPS and AJAX detection

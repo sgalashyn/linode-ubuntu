@@ -1,0 +1,8 @@
+# Install the the Node.js
+function install_nodejs {
+
+  apt-add-repository -y ppa:chris-lea/node.js
+  apt-get update > /dev/null
+  apt-get install -y nodejs
+
+}
